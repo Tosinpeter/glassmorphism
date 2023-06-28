@@ -97,6 +97,7 @@ class GlassmorphicFlexContainer extends StatelessWidget {
   ///
   /// {@macro flutter.widgets.ProxyWidget.child
   final Widget? child;
+  final BorderRadiusGeometry? borderRR;
 
   /// All the bellow parametrs are used to design the Glassmorphic effects and this effect is used to
   /// improve the performance ans scalablility as per the requirement.
@@ -123,7 +124,7 @@ class GlassmorphicFlexContainer extends StatelessWidget {
       required this.blur,
       required this.borderGradient,
       this.constraints,
-      this.flex = 1})
+      this.flex = 1, this.borderRR})
       : assert(margin == null || margin.isNonNegative),
         assert(padding == null || padding.isNonNegative),
         assert(
@@ -163,13 +164,13 @@ class GlassmorphicFlexContainer extends StatelessWidget {
           children: [
             ClipRRect(
               clipBehavior: Clip.hardEdge,
-              borderRadius: BorderRadius.circular(borderRadius),
+              borderRadius: borderRR,
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur * 2),
                 child: Container(
                   alignment: alignment ?? Alignment.topLeft,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(borderRadius),
+                    borderRadius: borderRR,
                     gradient: linearGradient,
                   ),
                 ),
@@ -450,10 +451,7 @@ class _GradientPainter extends CustomPainter {
     Path outerRectPath = Path()..addRRect(outerRect);
     Path innerRectPath2 = Path()..addRRect(innerRect2);
     canvas.drawPath(
-        Path.combine(
-            PathOperation.difference,
-            outerRectPath,
-            innerRectPath2),
+        Path.combine(PathOperation.difference, outerRectPath, innerRectPath2),
         paintObject);
   }
 
